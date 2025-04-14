@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h1>Low Stock Items</h1>
+
+{% if low_stock_items %}
+<table>
+    <thead>
+        <tr>
+            <th>Product Name</th>
+            <th>Quantity</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for item in low_stock_items %}
+        <tr>
+            <td>{{ item.product.Product_Name }}</td>
+            <td>{{ item.Quantity }}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+
+<form action="{{ url_for('inventory.reorder_low_stock') }}" method="post" style="margin-top: 20px;">
+    <button type="submit" class="btn-primary">📦 Reorder All Critical Low Stock Items</button>
+</form>
+
+{% else %}
+<p>No low stock items! 🎉</p>
+{% endif %}
+
+{% endblock %}

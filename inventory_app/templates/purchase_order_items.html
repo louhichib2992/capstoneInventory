@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h1>Items in Purchase Order #{{ order.Purchase_Order_ID }}</h1>
+
+<table>
+    <thead>
+        <tr>
+            <th>Product Name</th>
+            <th>Quantity Ordered</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for item in items %}
+        <tr>
+            <td>{{ item.product.Product_Name }}</td>
+            <td>{{ item.Quantity }}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+<div style="margin-top: 20px;">
+    <a href="{{ url_for('inventory.list_purchase_orders') }}" class="btn-secondary">⬅️ Back to Purchase Orders</a>
+</div>
+{% endblock %}
