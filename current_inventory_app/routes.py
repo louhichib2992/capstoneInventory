@@ -4,7 +4,7 @@ from extensions import db
 from models import Product, Supplier, Inventory, PurchaseOrder, PurchaseOrderItem, ProductCategory
 from datetime import datetime, timedelta
 import random
-
+#hello
 inventory_bp = Blueprint('inventory', __name__)
 
 # ======================
