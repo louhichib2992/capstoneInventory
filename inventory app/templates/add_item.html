@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h1>➕ Add Inventory Item</h1>
+
+<form method="post">
+    <div style="margin-bottom: 15px;">
+        <label>Product:</label><br>
+        <select name="Product_ID" class="btn-secondary" required style="width: 100%;">
+            {% for product in products %}
+                <option value="{{ product.Product_ID }}">{{ product.Product_Name }}</option>
+            {% endfor %}
+        </select>
+    </div>
+
+    <div style="margin-bottom: 15px;">
+        <label>Quantity:</label><br>
+        <input type="number" name="Quantity" min="0" required style="padding: 10px; width: 100%; border-radius: 8px; margin-top: 5px;">
+    </div>
+
+    <div style="margin-bottom: 15px;">
+        <label>Unit Price ($):</label><br>
+        <input type="text" name="Unit_Price" required style="padding: 10px; width: 100%; border-radius: 8px; margin-top: 5px;">
+    </div>
+
+    <button type="submit" class="btn-primary" style="width: 100%;">Add Inventory Item</button>
+</form>
+
+<div style="margin-top: 20px;">
+    <a href="{{ url_for('inventory.get_inventory') }}" class="btn-secondary">⬅️ Back to Inventory</a>
+</div>
+{% endblock %}
