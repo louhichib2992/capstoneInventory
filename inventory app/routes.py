@@ -253,3 +253,4 @@ def login():
 def logout():
     session.pop('logged_in', None)
     return redirect(url_for('inventory.login'))
+
