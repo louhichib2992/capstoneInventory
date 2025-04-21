@@ -2,7 +2,7 @@ from flask import Blueprint, request, render_template, redirect, url_for, jsonif
 from functools import wraps
 
 # ======================
-# AUTHENTICATION HELPERS
+# AUTHENTICATION
 # ======================
 def login_required(f):
     @wraps(f)
@@ -76,7 +76,7 @@ def add_inventory_item():
         )
         db.session.add(new_item)
         db.session.commit()
-        return redirect(url_for('inventory.login'))
+        return redirect(url_for('inventory.get_inventory'))
 
     return render_template('add_item.html', products=products)
 
@@ -88,9 +88,10 @@ def update_inventory_quantity(id):
     if request.method == 'POST':
         item.Quantity = request.form['Quantity']
         db.session.commit()
-        return redirect(url_for('inventory.login'))
+        return redirect(url_for('inventory.get_inventory'))
 
     return render_template('update_item.html', item=item)
+
 
 
 # =========================
