@@ -1,0 +1,38 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h1>Supplier Management</h1>
+
+<table>
+    <thead>
+        <tr>
+            <th>Supplier Name</th>
+            <th>Contact Name</th>
+            <th>Contact Email</th>
+            <th>Contact Phone</th>
+            <th>Address</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for supplier in suppliers %}
+        <tr>
+            <td>{{ supplier.Supplier_Name }}</td>
+            <td>{{ supplier.Contact_Name }}</td>
+            <td>{{ supplier.Contact_Email }}</td>
+            <td>{{ supplier.Contact_Phone }}</td>
+            <td>{{ supplier.Address }}</td>
+            <td>
+                <form method="post" action="{{ url_for('inventory.delete_supplier', supplier_id=supplier.Supplier_ID) }}" style="display:inline;">
+                    <button type="submit" class="btn-secondary" style="background-color: #dc3545; color: white;">Delete</button>
+                </form>
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+<div style="margin-top: 20px;">
+    <a href="{{ url_for('inventory.add_supplier') }}" class="btn-primary">➕ Add New Supplier</a>
+</div>
+{% endblock %}

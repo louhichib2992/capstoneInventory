@@ -1,0 +1,61 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h1>Inventory Management</h1>
+
+<form method="get" action="{{ url_for('inventory.get_inventory') }}" style="margin-bottom: 20px;">
+    <select name="supplier_id" class="btn-secondary">
+        <option value="">All Suppliers</option>
+        {% for supplier in suppliers %}
+            <option value="{{ supplier.Supplier_ID }}" {% if selected_supplier == supplier.Supplier_ID %}selected{% endif %}>
+                {{ supplier.Supplier_Name }}
+            </option>
+        {% endfor %}
+    </select>
+
+    <select name="category_id" class="btn-secondary" style="margin-left: 10px;">
+        <option value="">All Categories</option>
+        {% for category in categories %}
+            <option value="{{ category.Category_ID }}" {% if selected_category == category.Category_ID %}selected{% endif %}>
+                {{ category.Category_Name }}
+            </option>
+        {% endfor %}
+    </select>
+
+    <label style="margin-left: 15px;">
+        <input type="checkbox" name="low_stock" value="1" {% if low_stock_filter %}checked{% endif %}>
+        Low Stock Only
+    </label>
+
+    <button type="submit" class="btn-primary" style="margin-left: 10px;">Filter</button>
+</form>
+
+<table>
+    <thead>
+        <tr>
+            <th>Product Name</th>
+            <th>Description</th>
+            <th>Quantity</th>
+            <th>Unit Price</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for item in inventory_list %}
+        <tr>
+            <td>{{ item.product.Product_Name }}</td>
+            <td>{{ item.product.Product_Description }}</td>
+            <td>{{ item.Quantity }}</td>
+            <td>${{ '%.2f'|format(item.Unit_Price) }}</td>
+            <td>
+                <a href="{{ url_for('inventory.update_inventory_quantity', id=item.Inventory_ID) }}" class="btn-secondary">Update</a>
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+<div style="margin-top: 20px;">
+    <a href="{{ url_for('inventory.add_inventory_item') }}" class="btn-primary">➕ Add New Inventory Item</a>
+</div>
+{% endblock %}

@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h1>📊 Inventory Dashboard</h1>
+
+<div style="display: flex; flex-wrap: wrap; gap: 20px; margin-top: 20px;">
+    <div style="flex: 1; min-width: 250px; background: #5fb18b; color: white; padding: 20px; border-radius: 12px; box-shadow: 0 4px 8px rgba(0,0,0,0.3);">
+        <h2>Total Products</h2>
+        <p style="font-size: 32px;">{{ total_products }}</p>
+    </div>
+
+    <div style="flex: 1; min-width: 250px; background: #007bff; color: white; padding: 20px; border-radius: 12px; box-shadow: 0 4px 8px rgba(0,0,0,0.3);">
+        <h2>Total Inventory</h2>
+        <p style="font-size: 32px;">{{ total_inventory_items }}</p>
+    </div>
+
+    <div style="flex: 1; min-width: 250px; background: #ffc107; color: #333; padding: 20px; border-radius: 12px; box-shadow: 0 4px 8px rgba(0,0,0,0.3);">
+        <h2>Stock Value</h2>
+        <p style="font-size: 32px;">${{ total_stock_value }}</p>
+    </div>
+
+    <div style="flex: 1; min-width: 250px; background: #dc3545; color: white; padding: 20px; border-radius: 12px; box-shadow: 0 4px 8px rgba(0,0,0,0.3);">
+        <h2>Low Stock Items</h2>
+        <p style="font-size: 32px;">{{ low_stock_items }}</p>
+    </div>
+</div>
+
+{% if low_stock_alert %}
+    <div style="margin-top: 30px; padding: 20px; background-color: #dc3545; color: white; border-radius: 12px; text-align: center;">
+        ⚠️ Low Stock! Some items need immediate reorder.
+    </div>
+{% endif %}
+{% endblock %}
