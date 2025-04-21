@@ -1,6 +1,6 @@
 from flask import Flask
 from extensions import db
-#hi there
+#hi there!
 def create_app():
     app = Flask(__name__)
 
