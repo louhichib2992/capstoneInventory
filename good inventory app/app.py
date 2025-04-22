@@ -3,7 +3,7 @@ from extensions import db
 
 def create_app():
     app = Flask(__name__)
-
+#hello
     app.secret_key = 'ohsosuperdupersecretkey777'
 
     app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///mock_inventory.db'
