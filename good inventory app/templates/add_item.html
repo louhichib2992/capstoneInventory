@@ -3,24 +3,53 @@
 {% block content %}
 <h1>➕ Add Inventory Item</h1>
 
+<div style="max-width: 800px; margin: auto; background: white; padding: 25px; border-radius: 15px; box-shadow: 0 2px 6px rgba(0,0,0,0.1);">
+
 <form method="post">
     <div style="margin-bottom: 15px;">
-        <label>Product:</label><br>
-        <select name="Product_ID" class="btn-secondary" required style="width: 100%;">
-            {% for product in products %}
-                <option value="{{ product.Product_ID }}">{{ product.Product_Name }}</option>
-            {% endfor %}
-        </select>
+        <label>Product Name:</label><br>
+        <input type="text" name="Product_Name" required
+               style="padding: 10px; width: 100%; border-radius: 8px; margin-top: 5px;">
+    </div>
+
+    <div style="margin-bottom: 15px;">
+        <label>Description (optional):</label><br>
+        <textarea name="Description"
+                  style="padding: 10px; width: 100%; height: 100px; border-radius: 8px; margin-top: 5px;"></textarea>
     </div>
 
     <div style="margin-bottom: 15px;">
         <label>Quantity:</label><br>
-        <input type="number" name="Quantity" min="0" required style="padding: 10px; width: 100%; border-radius: 8px; margin-top: 5px;">
+        <input type="number" name="Quantity" min="0" required
+               style="padding: 10px; width: 100%; border-radius: 8px; margin-top: 5px;">
     </div>
 
     <div style="margin-bottom: 15px;">
-        <label>Unit Price ($):</label><br>
-        <input type="text" name="Unit_Price" required style="padding: 10px; width: 100%; border-radius: 8px; margin-top: 5px;">
+        <label>Unit Price:</label><br>
+        <input type="number" name="Unit_Price" step="0.01" required
+               style="padding: 10px; width: 100%; border-radius: 8px; margin-top: 5px;">
+    </div>
+
+    <div style="margin-bottom: 15px;">
+        <label>Category:</label><br>
+        <input list="categories" name="Category_Name" required
+               style="padding: 10px; width: 100%; border-radius: 8px; margin-top: 5px;">
+        <datalist id="categories">
+            {% for category in categories %}
+                <option value="{{ category.Category_Name }}">
+            {% endfor %}
+        </datalist>
+    </div>
+
+    <div style="margin-bottom: 15px;">
+        <label>Supplier:</label><br>
+        <input list="suppliers" name="Supplier_Name" required
+               style="padding: 10px; width: 100%; border-radius: 8px; margin-top: 5px;">
+        <datalist id="suppliers">
+            {% for supplier in suppliers %}
+                <option value="{{ supplier.Supplier_Name }}">
+            {% endfor %}
+        </datalist>
     </div>
 
     <button type="submit" class="btn-primary" style="width: 100%;">Add Inventory Item</button>
@@ -28,5 +57,7 @@
 
 <div style="margin-top: 20px;">
     <a href="{{ url_for('inventory.get_inventory') }}" class="btn-secondary">⬅️ Back to Inventory</a>
+</div>
+
 </div>
 {% endblock %}

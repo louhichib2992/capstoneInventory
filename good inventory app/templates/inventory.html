@@ -27,12 +27,17 @@
         Low Stock Only
     </label>
 
+        <input type="number" name="product_id" placeholder="Enter Product ID" value="{{ request.args.get('product_id', '') }}">
+
+
+
     <button type="submit" class="btn-primary" style="margin-left: 10px;">Filter</button>
 </form>
 
 <table>
     <thead>
         <tr>
+            <th>Product_ID</th>
             <th>Product Name</th>
             <th>Description</th>
             <th>Quantity</th>
@@ -43,6 +48,7 @@
     <tbody>
         {% for item in inventory_list %}
         <tr>
+            <td>{{item.product.Product_ID}}</td>
             <td>{{ item.product.Product_Name }}</td>
             <td>{{ item.product.Product_Description }}</td>
             <td>{{ item.Quantity }}</td>

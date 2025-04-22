@@ -1,0 +1,50 @@
+@inventory_bp.route('/add_inventory', methods=['GET', 'POST'])
+def add_inventory_item():
+    categories = ProductCategory.query.all()
+    suppliers = Supplier.query.all()
+
+    if request.method == 'POST':
+        product_name = request.form['Product_Name']
+        description = request.form.get('Description')
+        quantity = int(request.form['Quantity'])
+        unit_price = float(request.form['Unit_Price'])
+        category_name = request.form['Category_Name']
+        supplier_name = request.form['Supplier_Name']
+
+        # Get or create category
+        category = ProductCategory.query.filter_by(Category_Name=category_name).first()
+        if not category:
+            category = ProductCategory(Category_Name=category_name)
+            db.session.add(category)
+            db.session.commit()
+
+        # Get or create supplier
+        supplier = Supplier.query.filter_by(Supplier_Name=supplier_name).first()
+        if not supplier:
+            supplier = Supplier(Supplier_Name=supplier_name)
+            db.session.add(supplier)
+            db.session.commit()
+
+        # Create product
+        product = Product(
+            Product_Name=product_name,
+            Product_Description=description,
+            Category_ID=category.Category_ID,
+            Supplier_ID=supplier.Supplier_ID
+        )
+        db.session.add(product)
+        db.session.commit()
+
+        # Create inventory record
+        new_item = Inventory(
+            Product_ID=product.Product_ID,
+            Quantity=quantity,
+            Unit_Price=unit_price
+        )
+        db.session.add(new_item)
+        db.session.commit()
+
+        flash("✅ Inventory item added successfully.")
+        return redirect(url_for('inventory.get_inventory'))
+
+    return render_template('add_item.html', categories=categories, suppliers=suppliers)

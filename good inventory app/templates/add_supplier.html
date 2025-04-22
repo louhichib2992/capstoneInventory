@@ -3,30 +3,37 @@
 {% block content %}
 <h1>➕ Add Supplier</h1>
 
+<div style="max-width: 800px; margin: auto; background: white; padding: 25px; border-radius: 15px; box-shadow: 0 2px 6px rgba(0,0,0,0.1);">
+
 <form method="post">
     <div style="margin-bottom: 15px;">
         <label>Supplier Name:</label><br>
-        <input type="text" name="Supplier_Name" required style="padding: 10px; width: 100%; border-radius: 8px; margin-top: 5px;">
+        <input type="text" name="Supplier_Name" required
+               style="padding: 10px; width: 100%; border-radius: 8px; margin-top: 5px;">
     </div>
 
     <div style="margin-bottom: 15px;">
         <label>Contact Name:</label><br>
-        <input type="text" name="Contact_Name" required style="padding: 10px; width: 100%; border-radius: 8px; margin-top: 5px;">
+        <input type="text" name="Contact_Name" required
+               style="padding: 10px; width: 100%; border-radius: 8px; margin-top: 5px;">
     </div>
 
     <div style="margin-bottom: 15px;">
         <label>Contact Email:</label><br>
-        <input type="email" name="Contact_Email" required style="padding: 10px; width: 100%; border-radius: 8px; margin-top: 5px;">
+        <input type="email" name="Contact_Email" required
+               style="padding: 10px; width: 100%; border-radius: 8px; margin-top: 5px;">
     </div>
 
     <div style="margin-bottom: 15px;">
         <label>Contact Phone:</label><br>
-        <input type="text" name="Contact_Phone" required style="padding: 10px; width: 100%; border-radius: 8px; margin-top: 5px;">
+        <input type="text" name="Contact_Phone" required
+               style="padding: 10px; width: 100%; border-radius: 8px; margin-top: 5px;">
     </div>
 
     <div style="margin-bottom: 15px;">
         <label>Address:</label><br>
-        <input type="text" name="Address" required style="padding: 10px; width: 100%; border-radius: 8px; margin-top: 5px;">
+        <input type="text" name="Address" required
+               style="padding: 10px; width: 100%; border-radius: 8px; margin-top: 5px;">
     </div>
 
     <button type="submit" class="btn-primary" style="width: 100%;">Add Supplier</button>
@@ -34,5 +41,7 @@
 
 <div style="margin-top: 20px;">
     <a href="{{ url_for('inventory.list_suppliers') }}" class="btn-secondary">⬅️ Back to Suppliers</a>
+</div>
+
 </div>
 {% endblock %}
