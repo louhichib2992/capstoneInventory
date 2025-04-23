@@ -32,7 +32,7 @@
             <td>{{ order.Order_Date.strftime('%Y-%m-%d') }}</td>
             <td>
                 <a href="{{ url_for('inventory.view_purchase_order_items', order_id=order.Purchase_Order_ID) }}" class="btn-secondary">View Items</a>
-                {% if order.Status != "Received" %}
+                {% if order.Purchase_Order_Status != "Received" %}
                 <form method="post" action="{{ url_for('inventory.receive_order', order_id=order.Purchase_Order_ID) }}" style="display:inline;">
                     <button type="submit" class="btn-primary" style="margin-left: 5px;">Mark Received</button>
                 </form>

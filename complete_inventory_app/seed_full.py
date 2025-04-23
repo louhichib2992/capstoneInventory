@@ -84,7 +84,7 @@ with app.app_context():
 
         po = PurchaseOrder(
             Supplier_ID=supplier.Supplier_ID,
-            Status=random.choice(["Pending", "Received", "Cancelled"]),
+            Purchase_Order_Status=random.choice(["Pending", "Received", "Cancelled"]),
             Order_Date=order_date
         )
         db.session.add(po)

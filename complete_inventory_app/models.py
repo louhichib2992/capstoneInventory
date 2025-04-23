@@ -58,7 +58,7 @@ class PurchaseOrder(db.Model):
 
     Purchase_Order_ID = db.Column(db.Integer, primary_key=True)
     Supplier_ID = db.Column(db.Integer, db.ForeignKey('Supplier.Supplier_ID'))
-    Status = db.Column(db.String(50), nullable=False)
+    Purchase_Order_Status = db.Column(db.String(50), nullable=False)
     Order_Date = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
     Created_At = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
     Updated_At = db.Column(db.DateTime, nullable=False, default=datetime.utcnow, onupdate=datetime.utcnow)

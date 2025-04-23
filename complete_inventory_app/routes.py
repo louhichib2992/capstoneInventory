@@ -157,7 +157,7 @@ def reorder_low_stock():
 
         order = PurchaseOrder(
             Supplier_ID=product.Supplier_ID,
-            Status="Pending",
+            Purchase_Order_Status="Pending",
             Order_Date=datetime.utcnow()
         )
         db.session.add(order)
@@ -217,11 +217,11 @@ def delete_supplier(supplier_id):
 @inventory_bp.route('/purchase_orders', methods=['GET'])
 @login_required
 def list_purchase_orders():
-    status_filter = request.args.get('status')
+    status_filter = request.args.get('purchase_order_status')
 
     purchase_orders = None
     if status_filter:
-        purchase_orders = db.session.query(PurchaseOrder).filter_by(Status=status_filter).all()
+        purchase_orders = db.session.query(PurchaseOrder).filter_by(Purchase_Order_Status=status_filter).all()
     else:
         purchase_orders = db.session.query(PurchaseOrder).all()
     
@@ -242,7 +242,7 @@ def receive_order(order_id):
     order = db.session.query(PurchaseOrder).get(order_id)
     if order is None:
         abort(404)
-    if order.Status == "Received":
+    if order.Purchase_Order_Status == "Received":
         return redirect(url_for('inventory.list_purchase_orders'))
 
     for item in order.items:
@@ -257,7 +257,7 @@ def receive_order(order_id):
             )
             db.session.add(new_inventory)
 
-    order.Status = "Received"
+    order.Purchase_Order_Status = "Received"
     db.session.commit()
     return redirect(url_for('inventory.list_purchase_orders'))
 

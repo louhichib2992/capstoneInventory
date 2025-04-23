@@ -128,27 +128,27 @@ with app.app_context():
     po1 = PurchaseOrder(
         Supplier_ID=supp1.Supplier_ID,
         Order_Date=datetime.utcnow() - timedelta(days=5),
-        Status='Received'
+        Purchase_Order_Status='Received'
     )
     po2 = PurchaseOrder(
         Supplier_ID=supp2.Supplier_ID,
         Order_Date=datetime.utcnow() - timedelta(days=3),
-        Status='Pending'
+        Purchase_Order_Status='Pending'
     )
     po3 = PurchaseOrder(
         Supplier_ID=supp1.Supplier_ID,
         Order_Date=datetime.utcnow() - timedelta(days=1),
-        Status='Pending'
+        Purchase_Order_Status='Pending'
     )
     po4 = PurchaseOrder(
         Supplier_ID=supp4.Supplier_ID,
         Order_Date=datetime.utcnow() - timedelta(days=1),
-        Status='Pending'
+        Purchase_Order_Status='Pending'
     )
     po5 = PurchaseOrder(
         Supplier_ID=supp3.Supplier_ID,
         Order_Date=datetime.utcnow() - timedelta(days=1),
-        Status='Pending'
+        Purchase_Order_Status='Pending'
     )
 
     db.session.add_all([po1, po2, po3, po4, po5])
