@@ -157,7 +157,7 @@ def reorder_low_stock():
 
         order = PurchaseOrder(
             Supplier_ID=product.Supplier_ID,
-            Purchase_Order_Status="Pending",
+            Status="Pending",
             Order_Date=datetime.utcnow()
         )
         db.session.add(order)

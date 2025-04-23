@@ -12,7 +12,7 @@ def create_app():
 #hello
     app.secret_key = 'ohsosuperdupersecretkey777'
 
-    app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///mock_inventory.db'
+    app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///elevate_retail.db'
     app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
     db.init_app(app)
