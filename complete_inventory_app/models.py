@@ -35,7 +35,7 @@ class Supplier(db.Model):
     Contact_Name = db.Column(db.String(100))
     Contact_Email = db.Column(db.String(255))
     Contact_Phone = db.Column(db.String(20))
-    Address = db.Column(db.String(255))
+
 #hello
 # ========== Inventory Table ==========
 class Inventory(db.Model):
