@@ -32,10 +32,9 @@ class Supplier(db.Model):
 
     Supplier_ID = db.Column(db.Integer, primary_key=True)
     Supplier_Name = db.Column(db.String(100), nullable=False)
-    Contact_Name = db.Column(db.String(100))
-    Contact_Email = db.Column(db.String(255))
-    Contact_Phone = db.Column(db.String(20))
-    Address = db.Column(db.String(255))
+    Contact_Name = db.Column(db.String(100), nullable=False)
+    Contact_Email = db.Column(db.String(255), nullable=False)
+    Contact_Phone = db.Column(db.String(20), nullable=False)
 
 # ========== Inventory Table ==========
 class Inventory(db.Model):
