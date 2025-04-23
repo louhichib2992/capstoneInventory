@@ -26,11 +26,11 @@ with app.app_context():
 
     # Add Suppliers
     suppliers = [
-        Supplier(Supplier_Name="Tech Supplies Inc", Contact_Name="John Doe", Contact_Email="techsupplies@example.com", Contact_Phone="123-456-7890", Address="123 Tech Road"),
-        Supplier(Supplier_Name="Office Depot", Contact_Name="Jane Smith", Contact_Email="officedepot@example.com", Contact_Phone="234-567-8901", Address="456 Office St"),
-        Supplier(Supplier_Name="Furniture World", Contact_Name="Sam Wilson", Contact_Email="furnitureworld@example.com", Contact_Phone="345-678-9012", Address="789 Furniture Ave"),
-        Supplier(Supplier_Name="Gadget Galaxy", Contact_Name="Alice Brown", Contact_Email="gadgetgalaxy@example.com", Contact_Phone="456-789-0123", Address="101 Gadget Blvd"),
-        Supplier(Supplier_Name="Supply Hub", Contact_Name="Bob Johnson", Contact_Email="supplyhub@example.com", Contact_Phone="567-890-1234", Address="202 Supply Lane")
+        Supplier(Supplier_Name="Tech Supplies Inc", Contact_Name="John Doe", Contact_Email="techsupplies@example.com", Contact_Phone="123-456-7890"),
+        Supplier(Supplier_Name="Office Depot", Contact_Name="Jane Smith", Contact_Email="officedepot@example.com", Contact_Phone="234-567-8901"),
+        Supplier(Supplier_Name="Furniture World", Contact_Name="Sam Wilson", Contact_Email="furnitureworld@example.com", Contact_Phone="345-678-9012"),
+        Supplier(Supplier_Name="Gadget Galaxy", Contact_Name="Alice Brown", Contact_Email="gadgetgalaxy@example.com", Contact_Phone="456-789-0123"),
+        Supplier(Supplier_Name="Supply Hub", Contact_Name="Bob Johnson", Contact_Email="supplyhub@example.com", Contact_Phone="567-890-1234")
     ]
     db.session.add_all(suppliers)
     db.session.commit()

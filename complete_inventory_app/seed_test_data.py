@@ -24,14 +24,12 @@ with app.app_context():
         Contact_Name='Laura Pierre',
         Contact_Email='laura.p@beautisa.com',
         Contact_Phone='919-991-1199',
-        Address='100 Copper Ln'
     )
     supp2 = Supplier(
         Supplier_Name='Beats by Dre',
         Contact_Name='John Smith',
         Contact_Email='johnsmith@beatsbydre.com',
         Contact_Phone='209-902-2200',
-        Address='200 Iron Blvd'
     )
 
     supp3 = Supplier(
@@ -39,14 +37,12 @@ with app.app_context():
         Contact_Name='Mike Thomson',
         Contact_Email='mike@gadgetzone.io',
         Contact_Phone='415-339-7771',
-        Address='88 Silicon Loop'
     )
     supp4 = Supplier(
         Supplier_Name='NaturalVibes',
         Contact_Name='Sophia Lee',
         Contact_Email='slee@naturalvibes.com',
         Contact_Phone='718-888-2345',
-        Address='12 Eco Blvd'
     )
     db.session.add_all([supp1, supp2, supp3, supp4])
     db.session.commit()
