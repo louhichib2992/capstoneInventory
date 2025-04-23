@@ -185,7 +185,6 @@ def add_supplier():
             Contact_Name=request.form['Contact_Name'],
             Contact_Email=request.form['Contact_Email'],
             Contact_Phone=request.form['Contact_Phone'],
-            Address=request.form['Address']
         )
         db.session.add(new_supplier)
         db.session.commit()
