@@ -1,5 +1,11 @@
-from extensions import db
+import os
 from datetime import datetime
+
+# Conditional import of database
+if os.getenv('FLASK_ENV') == 'pos':
+    from src.utils.db_utils import db
+else:
+    from extensions import db
 
 # ========== Product Table ==========
 class Product(db.Model):
@@ -31,12 +37,11 @@ class Supplier(db.Model):
     __tablename__ = 'Supplier'
 
     Supplier_ID = db.Column(db.Integer, primary_key=True)
-    Supplier_Name = db.Column(db.String(100), nullable=False)
+    Supplier_Name = db.Column(db.String(100))
     Contact_Name = db.Column(db.String(100))
     Contact_Email = db.Column(db.String(255))
     Contact_Phone = db.Column(db.String(20))
 
-#hello
 # ========== Inventory Table ==========
 class Inventory(db.Model):
     __tablename__ = 'Inventory'

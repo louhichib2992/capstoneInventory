@@ -1,5 +1,12 @@
+import os
 from app import create_app
-from extensions import db
+
+
+# Conditional import of database
+if os.getenv('FLASK_ENV') == 'pos':
+    from src.utils.db_utils import db
+else:
+    from extensions import db
 
 app = create_app()
 

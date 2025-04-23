@@ -1,7 +1,14 @@
+import os
 from app import create_app
-from extensions import db
-from models import Supplier, ProductCategory, Product, Inventory, PurchaseOrder, PurchaseOrderItem
 from datetime import datetime, timedelta
+
+# Conditional import of database and models
+if os.getenv('FLASK_ENV') == 'pos':
+    from src.utils.db_utils import db
+    from src.models import Supplier, ProductCategory, Product, Inventory, PurchaseOrder, PurchaseOrderItem
+else:
+    from extensions import db
+    from models import Supplier, ProductCategory, Product, Inventory, PurchaseOrder, PurchaseOrderItem
 
 # Initialize the Flask app
 app = create_app()
@@ -17,14 +24,12 @@ with app.app_context():
         Contact_Name='Laura Pierre',
         Contact_Email='laura.p@beautisa.com',
         Contact_Phone='919-991-1199',
-
     )
     supp2 = Supplier(
         Supplier_Name='Beats by Dre',
         Contact_Name='John Smith',
         Contact_Email='johnsmith@beatsbydre.com',
         Contact_Phone='209-902-2200',
-
     )
 
     supp3 = Supplier(
@@ -32,14 +37,12 @@ with app.app_context():
         Contact_Name='Mike Thomson',
         Contact_Email='mike@gadgetzone.io',
         Contact_Phone='415-339-7771',
-
     )
     supp4 = Supplier(
         Supplier_Name='NaturalVibes',
         Contact_Name='Sophia Lee',
         Contact_Email='slee@naturalvibes.com',
         Contact_Phone='718-888-2345',
-
     )
     db.session.add_all([supp1, supp2, supp3, supp4])
     db.session.commit()

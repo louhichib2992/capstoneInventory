@@ -1,5 +1,11 @@
+import os
 from flask import Flask
-from extensions import db
+
+# Conditional import of database
+if os.getenv('FLASK_ENV') == 'pos':
+    from src.utils.db_utils import db
+else:
+    from extensions import db
 
 def create_app():
     app = Flask(__name__)
