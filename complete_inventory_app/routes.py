@@ -291,7 +291,7 @@ def login():
         flash('Login successful!', 'success')
         next_page = request.args.get('next')
         return redirect(next_page or url_for('inventory.dashboard'))
-    return render_template('login.html')
+    return render_template('inventory_login.html')
 
 @inventory_bp.route('/logout')
 def logout():
