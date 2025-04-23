@@ -1,8 +1,15 @@
+import os
 from app import create_app
-from extensions import db
-from models import Supplier, ProductCategory, Product, Inventory, PurchaseOrder, PurchaseOrderItem
 import random
 from datetime import datetime, timedelta
+
+# Conditional import of database and models
+if os.getenv('FLASK_ENV') == 'pos':
+    from src.utils.db_utils import db
+    from src.models import Supplier, ProductCategory, Product, Inventory, PurchaseOrder, PurchaseOrderItem
+else:
+    from extensions import db
+    from models import Supplier, ProductCategory, Product, Inventory, PurchaseOrder, PurchaseOrderItem
 
 # Create Flask app
 app = create_app()

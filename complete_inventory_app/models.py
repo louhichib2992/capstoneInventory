@@ -1,5 +1,11 @@
-from extensions import db
+import os
 from datetime import datetime
+
+# Conditional import of database
+if os.getenv('FLASK_ENV') == 'pos':
+    from src.utils.db_utils import db
+else:
+    from extensions import db
 
 # ========== Product Table ==========
 class Product(db.Model):

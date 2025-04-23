@@ -1,9 +1,16 @@
-from flask import Blueprint, request, render_template, redirect, url_for, jsonify, flash, session
+import os
+from flask import Blueprint, request, render_template, redirect, url_for, jsonify, flash, session, abort
 from functools import wraps
-from extensions import db
-from models import Product, Supplier, Inventory, PurchaseOrder, PurchaseOrderItem, ProductCategory
 from datetime import datetime
 import random
+
+# Conditional import of database and models
+if os.getenv('FLASK_ENV') == 'pos':
+    from src.utils.db_utils import db
+    from src.models import Product, Supplier, Inventory, PurchaseOrder, PurchaseOrderItem, ProductCategory
+else:
+    from extensions import db
+    from models import Product, Supplier, Inventory, PurchaseOrder, PurchaseOrderItem, ProductCategory
 
 inventory_bp = Blueprint('inventory', __name__)
 
@@ -37,7 +44,7 @@ def get_inventory():
     low_stock = request.args.get('low_stock')
     product_id = request.args.get('product_id', type=int)
 
-    query = Inventory.query.join(Product)
+    query = db.session.query(Inventory).join(Product)
 
     if product_id:
         query = query.filter(Product.Product_ID == product_id)
@@ -49,8 +56,8 @@ def get_inventory():
         query = query.filter(Inventory.Quantity <= 10)
 
     inventory_list = query.all()
-    suppliers = Supplier.query.all()
-    categories = ProductCategory.query.all()
+    suppliers = db.session.query(Supplier).all()
+    categories = db.session.query(ProductCategory).all()
     products = query.all()
 
 
@@ -66,8 +73,8 @@ def get_inventory():
 @inventory_bp.route('/add_inventory', methods=['GET', 'POST'])
 @login_required
 def add_inventory_item():
-    categories = ProductCategory.query.all()
-    suppliers = Supplier.query.all()
+    categories = db.session.query(ProductCategory).all()
+    suppliers = db.session.query(Supplier).all()
 
     if request.method == 'POST':
         product_name = request.form['Product_Name']
@@ -77,13 +84,13 @@ def add_inventory_item():
         category_name = request.form['Category_Name']
         supplier_name = request.form['Supplier_Name']
 
-        category = ProductCategory.query.filter_by(Category_Name=category_name).first()
+        category = db.session.query(ProductCategory).filter_by(Category_Name=category_name).first()
         if not category:
             category = ProductCategory(Category_Name=category_name)
             db.session.add(category)
             db.session.commit()
 
-        supplier = Supplier.query.filter_by(Supplier_Name=supplier_name).first()
+        supplier = db.session.query(Supplier).filter_by(Supplier_Name=supplier_name).first()
         if not supplier:
             supplier = Supplier(Supplier_Name=supplier_name)
             db.session.add(supplier)
@@ -114,7 +121,9 @@ def add_inventory_item():
 @inventory_bp.route('/update_inventory/<int:id>', methods=['GET', 'POST'])
 @login_required
 def update_inventory_quantity(id):
-    item = Inventory.query.get_or_404(id)
+    item = db.session.query(Inventory).get(id)
+    if item is None:
+        abort(404)
 
     if request.method == 'POST':
         item.Quantity = request.form['Quantity']
@@ -129,26 +138,26 @@ def update_inventory_quantity(id):
 @inventory_bp.route('/low_stock', methods=['GET'])
 @login_required
 def low_stock():
-    low_stock_items = Inventory.query.filter(Inventory.Quantity <= 10).all()
+    low_stock_items = db.session.query(Inventory).filter(Inventory.Quantity <= 10).all()
     return render_template('low_stock.html', low_stock_items=low_stock_items)
 
 @inventory_bp.route('/inventory/reorder_low_stock', methods=['POST'])
 @login_required
 def reorder_low_stock():
-    critical_items = Inventory.query.filter(Inventory.Quantity <= 5).all()
+    critical_items = db.session.query(Inventory).filter(Inventory.Quantity <= 5).all()
 
     if not critical_items:
         flash("⚠️ No low stock items to reorder!", "error")
         return redirect(url_for('inventory.low_stock'))
 
     for item in critical_items:
-        product = Product.query.get(item.Product_ID)
+        product = db.session.query(Product).get(item.Product_ID)
         if not product or not product.Supplier_ID:
             continue
 
         order = PurchaseOrder(
             Supplier_ID=product.Supplier_ID,
-            Status="Pending",
+            Purchase_Order_Status="Pending",
             Order_Date=datetime.utcnow()
         )
         db.session.add(order)
@@ -173,7 +182,7 @@ def reorder_low_stock():
 @inventory_bp.route('/suppliers', methods=['GET'])
 @login_required
 def list_suppliers():
-    suppliers = Supplier.query.all()
+    suppliers = db.session.query(Supplier).all()
     return render_template('suppliers.html', suppliers=suppliers)
 
 @inventory_bp.route('/add_supplier', methods=['GET', 'POST'])
@@ -184,8 +193,7 @@ def add_supplier():
             Supplier_Name=request.form['Supplier_Name'],
             Contact_Name=request.form['Contact_Name'],
             Contact_Email=request.form['Contact_Email'],
-            Contact_Phone=request.form['Contact_Phone'],
-            Address=request.form['Address']
+            Contact_Phone=request.form['Contact_Phone']
         )
         db.session.add(new_supplier)
         db.session.commit()
@@ -196,7 +204,9 @@ def add_supplier():
 @inventory_bp.route('/delete_supplier/<int:supplier_id>', methods=['POST'])
 @login_required
 def delete_supplier(supplier_id):
-    supplier = Supplier.query.get_or_404(supplier_id)
+    supplier = db.session.query(Supplier).get(supplier_id)
+    if supplier is None:
+        abort(404)
     db.session.delete(supplier)
     db.session.commit()
     return redirect(url_for('inventory.list_suppliers'))
@@ -208,25 +218,35 @@ def delete_supplier(supplier_id):
 @login_required
 def list_purchase_orders():
     status_filter = request.args.get('status')
-    purchase_orders = PurchaseOrder.query.filter_by(Status=status_filter).all() if status_filter else PurchaseOrder.query.all()
+
+    purchase_orders = None
+    if status_filter:
+        purchase_orders = db.session.query(PurchaseOrder).filter_by(Status=status_filter).all()
+    else:
+        purchase_orders = db.session.query(PurchaseOrder).all()
+    
     return render_template('purchase_orders.html', purchase_orders=purchase_orders)
 
 @inventory_bp.route('/purchase_order/<int:order_id>', methods=['GET'])
 @login_required
 def view_purchase_order_items(order_id):
-    order = PurchaseOrder.query.get_or_404(order_id)
-    items = PurchaseOrderItem.query.filter_by(Purchase_Order_ID=order_id).all()
+    order = db.session.query(PurchaseOrder).get(order_id)
+    if order is None:
+        abort(404)
+    items = db.session.query(PurchaseOrderItem).filter_by(Purchase_Order_ID=order_id).all()
     return render_template('purchase_order_items.html', order=order, items=items)
 
 @inventory_bp.route('/receive_order/<int:order_id>', methods=['POST'])
 @login_required
 def receive_order(order_id):
-    order = PurchaseOrder.query.get_or_404(order_id)
+    order = db.session.query(PurchaseOrder).get(order_id)
+    if order is None:
+        abort(404)
     if order.Status == "Received":
         return redirect(url_for('inventory.list_purchase_orders'))
 
     for item in order.items:
-        inventory_item = Inventory.query.filter_by(Product_ID=item.Product_ID).first()
+        inventory_item = db.session.query(Inventory).filter_by(Product_ID=item.Product_ID).first()
         if inventory_item:
             inventory_item.Quantity += item.Quantity
         else:
@@ -247,11 +267,11 @@ def receive_order(order_id):
 @inventory_bp.route('/dashboard', methods=['GET'])
 @login_required
 def dashboard():
-    total_products = Product.query.count()
+    total_products = db.session.query(db.func.count(Product.Product_ID)).scalar() or 0
     total_inventory_items = db.session.query(db.func.sum(Inventory.Quantity)).scalar() or 0
     total_stock_value = db.session.query(db.func.sum(Inventory.Quantity * Inventory.Unit_Price)).scalar() or 0
-    low_stock_items = Inventory.query.filter(Inventory.Quantity <= 10).count()
-    critical_low_stock = Inventory.query.filter(Inventory.Quantity <= 5).all()
+    low_stock_items = db.session.query(Inventory).filter(Inventory.Quantity <= 10).count()
+    critical_low_stock = db.session.query(Inventory).filter(Inventory.Quantity <= 5).all()
     low_stock_alert = len(critical_low_stock) > 0
 
     return render_template('dashboard.html',
