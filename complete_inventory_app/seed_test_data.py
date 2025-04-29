@@ -162,12 +162,12 @@ with app.app_context():
     )
     poi2 = PurchaseOrderItem(
         Purchase_Order_ID=po2.Purchase_Order_ID,
-        Product_ID=prod1.Product_ID,
+        Product_ID=prod2.Product_ID,
         Quantity=250
     )
     poi3 = PurchaseOrderItem(
         Purchase_Order_ID=po3.Purchase_Order_ID,
-        Product_ID=prod2.Product_ID,
+        Product_ID=prod1.Product_ID,
         Quantity=75
     )
     poi4 = PurchaseOrderItem(
@@ -180,7 +180,7 @@ with app.app_context():
         Product_ID=prod4.Product_ID,
         Quantity=75
     )
-    db.session.add_all([poi1, poi2, poi3])
+    db.session.add_all([poi1, poi2, poi3, poi4, poi5])
     db.session.commit()
 
     print("✅ Inventory test data seeded successfully.")
